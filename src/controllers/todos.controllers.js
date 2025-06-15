@@ -13,6 +13,8 @@ export const addTodo = async(req, res)=>{
         }
     
         const todo = await Todo.findOne({title})
+
+
     
         if(todo){
             return res.status(409).json({
@@ -26,11 +28,15 @@ export const addTodo = async(req, res)=>{
             description,
             isCompleted:false
         })
-    
+       
+        const newTodo = {
+            title:title,
+            description:description
+        }  
         return res.status(201).json({
             success:true,
             messsage:"New task created!",
-            task:todo
+            task:newTodo
         })
     } catch (error) {
         console.log("Error: ", error)         
@@ -38,16 +44,21 @@ export const addTodo = async(req, res)=>{
 }
 
 export const updateTodo = async(req,res)=>{
-  const todoId = req.params.todoId
-  const {title} = req.body
-
-  const updatedTodo = await Todo.findByIdandUpdate(todoId, {title}, {new:true})
-  await updatedTodo.save()
-
-  return res.status(200).json({
-    success:true,
-    message:'Todo task updated successfully!'     
-  })
+  try {
+    const todoId = req.params.todoId
+    const {title} = req.body
+  
+    const updatedTodo = await Todo.findByIdAndUpdate(todoId, {title}, {new:true})
+    await updatedTodo.save()
+  
+    return res.status(200).json({
+      success:true,
+      message:'Todo task updated successfully!'     
+    })
+  } catch (error) {
+    console.log('Error: ', errorr);
+    
+  }
 
 }
 
@@ -57,4 +68,78 @@ export const getAllTodos = async (req,res)=>{
     return res.status(200).json({
         "Tasks":todos || []
     })
+}
+
+
+export const completedTask = async(req,res)=>{
+
+    try {
+        const todoId = req.params.todoId
+           if (!mongoose.Types.ObjectId.isValid(todoId)) {
+                return res.status(400).json({
+                    success:false,
+                    message: "Invalid ID format"
+                })
+            }
+    
+        const todo = await Todo.findById(todoId)
+    
+        if(!todo){
+            return res.status(404).json({
+                success:false,
+                message:"Task not found!"
+            })
+        }
+        
+        if(todo.isCompleted === true)
+        {
+            return res.status(409).json({
+                sucess:"Conflict",
+                message:"This task is already completed!"
+            })
+        }
+        todo.isCompleted = true
+    
+        await todo.save()
+    
+        return res.status(200).json({
+            success:true,
+            message:`${todo.title} completed successfully!`
+        })
+    } catch (error) {
+      console.log("Error: ", error);
+         
+    }
+}
+
+
+export const deleteTodo = async(req,res)=>{
+    try {
+        const todoId = req.params.todoId
+
+        if (!mongoose.Types.ObjectId.isValid(todoId)) {
+            return res.status(400).json({
+                success:false,
+                message: "Invalid ID format"
+            })
+        }
+
+    
+        const deletedTodo = await Todo.findByIdAndDelete(todoId)
+        if(!deletedTodo){
+            return res.status(404).json({
+                success:false,
+                message:"Todo not found"
+            })
+        }
+    
+        return res.status(200).json({
+            success:true,
+            message:"Todo Deleted Successfully!"
+        })
+    } catch (error) {
+        console.log("Error: ", error);
+        
+    }
+
 }
