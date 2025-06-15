@@ -1,9 +1,9 @@
 import express from "express"
 import dotenv from "dotenv"
-import DbConnection from "./src/db/DbConnection.js"
-import userRoutes from './src/routes/user.routes.js'
+import DbConnection from "./db/DbConnection.js"
+import userRoutes from './routes/user.routes.js'
 import bodyParser from "body-parser"
-import todoRoutes from './src/routes/todo.routes.js' 
+import todoRoutes from './routes/todo.routes.js' 
 import cookieParser from "cookie-parser"
 
 const app = express()  // Configuring the app using express.

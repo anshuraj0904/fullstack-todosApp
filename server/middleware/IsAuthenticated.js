@@ -1,5 +1,4 @@
 // Here, we'll create the authentication system for letting the user do things:-
-import { login } from "../controllers/user.controllers.js"
 import jwt from "jsonwebtoken" 
 
 export const isAuthenticated = async(req,res,next)=>{

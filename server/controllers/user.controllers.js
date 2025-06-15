@@ -81,11 +81,12 @@ export const login = async (req, res) => {
     );
 
     const access_token = await jwt.sign(
-      { userId: user._id, role: user?.role || "user" },
+      { userId: user._id, email:user?.email },
       process.env.SECRET_ACCESS_TOKEN,
       { expiresIn: "15m" }
     );
-
+    
+    
     return res
       .status(200)
       .cookie("refresh_token", refresh_token, {
