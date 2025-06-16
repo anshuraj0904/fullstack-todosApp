@@ -1,15 +1,15 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import Navbar from '../components/Navbar/Navbar.jsx'
+import Todos from '../components/Todos/Todos.jsx'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <>
-            <h1>The front end of todo App</h1>        
-    </>
+    <div className="flex flex-col">
+      <Navbar/>
+      <Todos/>
+    </div>
   )
 }
 
