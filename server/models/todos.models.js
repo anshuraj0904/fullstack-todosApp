@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { User } from "./user.models.js";
 
 
 const todoSchema = new mongoose.Schema({
@@ -8,6 +9,11 @@ const todoSchema = new mongoose.Schema({
     },
     description:{
         type:String,
+        required:true
+    },
+    createdBy:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'User',
         required:true
     },
     isCompleted:{

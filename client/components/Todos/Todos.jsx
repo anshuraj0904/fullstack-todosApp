@@ -23,13 +23,16 @@ function Todos() {
        
         if(data.success){
             console.log(data.message);
+            console.log(data.task);
+            
             setTitle('')
             setDescription('')
           }
 
           else{
             console.log(data.message);
-            
+            setTitle('')
+            setDescription('')
           }
     }
 

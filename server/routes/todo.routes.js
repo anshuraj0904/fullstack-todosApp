@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.route('/addTodo').post(isAuthenticated,addTodo)
 router.route('/updateTodo/:todoId').put(isAuthenticated,updateTodo)
-router.route('/getTodos').get(getAllTodos)
+router.route('/getTodos').get(isAuthenticated,getAllTodos)
 router.route('/deleteTodo/:todoId').delete(isAuthenticated,deleteTodo)
 router.route('/updateTask/:todoId').get(isAuthenticated,completedTask)
 

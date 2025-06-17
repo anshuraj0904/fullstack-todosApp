@@ -26,6 +26,7 @@ export const addTodo = async(req, res)=>{
         await Todo.create({
             title,
             description,
+            createdBy:req.id,
             isCompleted:false
         })
        
@@ -35,7 +36,7 @@ export const addTodo = async(req, res)=>{
         }  
         return res.status(201).json({
             success:true,
-            messsage:"New task created!",
+            message:"New task created!",
             task:newTodo
         })
     } catch (error) {
@@ -56,14 +57,15 @@ export const updateTodo = async(req,res)=>{
       message:'Todo task updated successfully!'     
     })
   } catch (error) {
-    console.log('Error: ', errorr);
+    console.log('Error: ', error);
     
   }
 
 }
 
 export const getAllTodos = async (req,res)=>{
-    const todos = await Todo.find()
+    const userId = req?.id 
+    const todos = await Todo.find({userId})
 
     return res.status(200).json({
         "Tasks":todos || []
