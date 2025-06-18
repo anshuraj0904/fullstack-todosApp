@@ -48,6 +48,13 @@ export const updateTodo = async(req,res)=>{
   try {
     const todoId = req.params.todoId
     const {title} = req.body
+
+    if(!title){
+        return res.status(200).json({
+      success:false,
+      message:'Please provide a title!'     
+    })
+    }
   
     const updatedTodo = await Todo.findByIdAndUpdate(todoId, {title}, {new:true})
     await updatedTodo.save()
@@ -57,7 +64,10 @@ export const updateTodo = async(req,res)=>{
       message:'Todo task updated successfully!'     
     })
   } catch (error) {
-    console.log('Error: ', error);
+    return res.status(400).json({
+        success:false,
+        message:"Something went wrong!"
+    })
     
   }
 
@@ -65,11 +75,14 @@ export const updateTodo = async(req,res)=>{
 
 export const getAllTodos = async (req,res)=>{
     const userId = req?.id 
-    const todos = await Todo.find({userId})
+    const todos = await Todo.find({createdBy:userId})
+    
 
     return res.status(200).json({
-        "Tasks":todos || []
+        success:true,
+        tasks:todos || []
     })
+    
 }
 
 
@@ -117,7 +130,7 @@ export const completedTask = async(req,res)=>{
 
 export const deleteTodo = async(req,res)=>{
     try {
-        const todoId = req.params.todoId
+        const todoId = req.params.todoId        
 
         if (!mongoose.Types.ObjectId.isValid(todoId)) {
             return res.status(400).json({

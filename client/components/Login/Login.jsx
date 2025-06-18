@@ -1,11 +1,15 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext.js"
+import toast from "react-hot-toast";
 
 function Login() {
     const [credentials, setCredentials] = useState({
         email:"",
         password:""
     });
-
+    const { login,setLogin } = useContext(AuthContext)
+    const navigate = useNavigate()
     const loginUser= async(e)=>{
         e.preventDefault();
         const response = await fetch("http://localhost:8000/api/v1/user/login",{
@@ -20,7 +24,22 @@ function Login() {
             credentials:"include"
         });
         const data = await response.json();
-        console.log(data);
+        if(data.success){
+          setLogin(true)  
+          toast.success(data.message)
+          setCredentials({
+            email:"",
+            password:""})
+          navigate("/todos")
+        }
+
+        else{
+          toast.error(data.message)
+          setCredentials({
+            email:"",
+            password:""
+          })
+        }
     }
 
   return (
@@ -61,7 +80,7 @@ function Login() {
 
           <button
             type="submit"
-            className="w-full bg-amber-500 text-white font-semibold py-2 rounded-md hover:bg-amber-600 transition-all duration-200"
+            className="w-full bg-amber-500 text-white font-semibold py-2 cursor-pointer rounded-md hover:bg-amber-600 transition-all duration-200"
             onClick={loginUser}
           >
             Login

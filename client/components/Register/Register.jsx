@@ -1,7 +1,9 @@
 import React, {useState} from 'react'
+import { toast } from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
 
 export const Register = () => {
-
+    const navigate = useNavigate()
     const [credentials, setCredentials] = useState({
       "fullName":"",
       "email":"",
@@ -24,11 +26,22 @@ export const Register = () => {
 
        const data = await response.json()
        if(!data.success){
-        alert(data.message)
+        toast.error(data.message)
+        setCredentials({
+          fullName:"",
+          email:"",
+          password:""
+        })
        }
 
        else{
-        alert('user registered successfully!')
+        toast.success(data.message)
+        setCredentials({
+          fullName:"",
+          email:"",
+          password:""
+        })
+        navigate("/login")
        }
     }
   return (

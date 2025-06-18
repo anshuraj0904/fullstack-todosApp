@@ -1,4 +1,6 @@
 import React from "react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 function Home() {
   return (
@@ -11,6 +13,22 @@ function Home() {
           Organize your day, manage tasks efficiently, and never miss a deadline
           again. Let's get productive together!
         </p>
+
+        <div className="flex justify-center items-center gap-x-0.5">
+          <Button
+            variant="outline"
+            className="bg-white text-amber-500 cursor-pointer hover:bg-amber-100 hover:text-gray-700 px-4 mx-2 py-2 rounded-md shadow-md"
+          >
+            <Link to={"/login"}>login</Link>
+          </Button>
+
+          <Button
+            variant="outline"
+            className="bg-white text-amber-500 cursor-pointer hover:bg-amber-100 hover:text-gray-700 px-4 py-2 rounded-md shadow-md"
+          >
+            <Link to={"/register"} >Register</Link>
+          </Button>
+        </div>
       </div>
     </div>
   );

@@ -9,6 +9,8 @@ export const isAlreadyLogged = async (req,res,next)=>{
              try {
                 const decoded =  jwt.verify(access_token, process.env.SECRET_ACCESS_TOKEN)
                 const incomingEmail = req.body?.email
+                // console.log(incomingEmail);
+                
                 if(decoded.email === incomingEmail){
                     return next()
                 } 
