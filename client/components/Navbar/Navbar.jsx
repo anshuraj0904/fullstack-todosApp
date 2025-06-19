@@ -3,26 +3,38 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext.js";
-import { toast } from 'react-hot-toast';
+import { toast } from "react-hot-toast";
 import Cookies from "js-cookie";
-
 
 function Navbar() {
   const navigate = useNavigate();
   const { login, setLogin } = useContext(AuthContext);
-  
+
   useEffect(() => {
-    const cookie = Cookies.get("refresh_token");
-    if (cookie) {
-      console.log("Cookie is available and the user is logged in!", cookie);
-      setLogin(true);
-    }
-    else{
-      console.log("Cookie is not available, user is not logged in.", cookie);
-      
-    }
-  },[setLogin]); 
-  
+    const getAccessToken = async () => {
+      try {
+        const res = await fetch("http://localhost:8000/api/v1/refresh", {
+          method: "GET",
+          credentials: "include",
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+          // Set login to true since refresh_token is valid
+          setLogin(true);
+          console.log("Refresh access token found, user is logged in")
+        } else {
+          console.warn("Refresh token invalid or expired, user might have logged out!");
+          setLogin(false);
+        }
+      } catch (err) {
+        console.error("Error refreshing token", err);
+        setLogin(false);
+      }
+    };
+
+    getAccessToken();
+  }, [login]);
 
   const handleLogout = async () => {
     const res = await fetch("http://localhost:8000/api/v1/user/logout", {
@@ -30,7 +42,7 @@ function Navbar() {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include"
+      credentials: "include",
     });
 
     const data = await res.json();
@@ -50,14 +62,14 @@ function Navbar() {
         <h1 className="text-white text-xl font-semibold tracking-wide">
           Welcome to the Todos App
         </h1>
-        { login &&
+        {login && (
           <Button
             className="bg-white text-amber-500 font-semibold hover:bg-gray-100"
             onClick={handleLogout}
           >
             Logout
           </Button>
-        }
+        )}
       </div>
     </div>
   );

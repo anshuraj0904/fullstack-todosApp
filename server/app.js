@@ -6,6 +6,7 @@ import bodyParser from "body-parser"
 import todoRoutes from './routes/todo.routes.js' 
 import cookieParser from "cookie-parser"
 import cors from "cors"
+import refreshroute from "./routes/refToken.routes.js"
 
 const app = express()  // Configuring the app using express.
 dotenv.config() // dotenv configuration. Note:- For all the places where we need to use .env, we need to import those below this line.
@@ -24,6 +25,7 @@ const port = process.env.PORT || 8000
 
 app.use('/api/v1/user', userRoutes)
 app.use('/api/v1/todo', todoRoutes)
+app.use('/api/v1', refreshroute)
 
 
 app.listen(port, ()=>{
