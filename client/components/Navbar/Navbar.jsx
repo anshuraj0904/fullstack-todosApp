@@ -64,7 +64,7 @@ function Navbar() {
         </h1>
         {login && (
           <Button
-            className="bg-white text-amber-500 font-semibold hover:bg-gray-100"
+            className="bg-white text-amber-500 font-semibold cursor-pointer hover:bg-gray-100"
             onClick={handleLogout}
           >
             Logout
